@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+  labels:
+    app: web-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+      - name: web-app
+        image: gcr/k8s-deployment-strategies:1.0
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: probe
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: probe
+          periodSeconds: 5
