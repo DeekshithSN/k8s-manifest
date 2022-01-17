@@ -1,0 +1,28 @@
+  
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+env:
+  DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }} 
+
+jobs:
+  k8s-policy-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Datree
+        run: curl https://get.datree.io | /bin/bash
+        
+      - name: set datree token 
+        run: datree config set token GJdx2cP2TCDyUY3EhQKgTc  
+        
+      - name: Run Datree's policy check
+        run: datree test datree.yaml
